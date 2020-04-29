@@ -6,6 +6,7 @@
 
 // require('./bootstrap');
 
+
 window._ = require('lodash');
 try {
     window.$ = window.jQuery = require('jquery');
@@ -39,6 +40,6 @@ if (token) {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
-const app = new Vue({
-    el: '#app',
-});
+import Vue from 'vue';
+//将 Vue 挂载到 ID 为 app 的页面元素上
+new Vue().$mount('#app');
