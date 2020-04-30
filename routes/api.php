@@ -48,11 +48,11 @@ Route::group(
            |-------------------------------------------------------------------------------
            | Get An Individual Cafe
            |-------------------------------------------------------------------------------
-           | URL:            /api/v1/cafes/{id}
+           | URL:            /api/v1/cafes/{cafe}
            | Controller:     API\CafesController@getCafe
            | Method:         GET
            | Description:    Gets an individual cafe
         */
-        Route::get('/cafes/{id}', 'Api\CafesController@getCafe');
+        Route::get('/cafes/{cafe}', 'Api\CafesController@getCafe');
     }
 );
