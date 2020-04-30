@@ -25,7 +25,6 @@ import NewCafe from "./pages/NewCafe";
  */
 Vue.use(VueRouter);
 
-
 const routes = [
     {
         path: '/',
@@ -35,17 +34,17 @@ const routes = [
     {
         path: '/cafes',
         name: 'cafes',
-        component: Cafes
+        component: Cafes,
     },
     {
         path: '/cafes/new',
         name: 'newcafe',
-        component: NewCafe
+        component: NewCafe,
     },
     {
         path: '/cafes/:id', //动态路由,可以通过传入指定 ID 参数来加载对应的咖啡店详情
         name: 'cafe',
-        component: Cafe
+        component: Cafe,
     }
 ];
 const router = new VueRouter({
