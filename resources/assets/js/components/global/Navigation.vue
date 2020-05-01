@@ -11,9 +11,9 @@
             </li>
         </ul>
 
-        <div class="right">
-            <img :src="user.avatar" v-show="userLoadStatus===2" class="avatar"/>
-        </div>
+<!--        <div class="right">-->
+<!--            <img :src="user.avatar" v-show="userLoadStatus===2" class="avatar"/>-->
+<!--        </div>-->
     </nav>
 </template>
 

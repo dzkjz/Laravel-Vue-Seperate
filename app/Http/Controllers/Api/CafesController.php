@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCafeRequest;
 use App\Models\Cafe;
 use Illuminate\Http\Request;
 
@@ -32,20 +34,16 @@ class CafesController extends Controller
      | Method:         POST
      | Description:    Adds a new cafe to the application
     */
-    public function postNewCafe(Request $request)
+    public function postNewCafe(StoreCafeRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string',
-            'address' => 'required|string',
-            'city' => 'required|string',
-            'state' => 'required|string',
-            'zip' => 'required|string',
-        ]);
-
+        $data = $request->all();
+        $data['latitude'] = 0;
+        $data['longitude'] = 0;
         $cafe = Cafe::create($data);
 
 
         return response()->json($cafe, 201);
+
     }
 
     /*

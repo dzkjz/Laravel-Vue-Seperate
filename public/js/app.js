@@ -2050,8 +2050,7 @@ __webpack_require__.r(__webpack_exports__);
     Navigation: _components_global_Navigation__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   created: function created() {
-    this.$store.dispatch('loadCafes');
-    this.$store.dispatch('loadUser');
+    this.$store.dispatch('loadCafes'); // this.$store.dispatch('loadUser');
   }
 });
 
@@ -2070,8 +2069,148 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "NewCafe.vue"
+  name: "NewCafe.vue",
+  data: function data() {
+    return {
+      name: '',
+      address: '',
+      city: '',
+      state: '',
+      zip: '',
+      validations: //其中 is_valid 字段标识是否验证成功，而 text 字段标识验证文本。
+      {
+        name: {
+          is_valid: true,
+          text: ''
+        },
+        address: {
+          is_valid: true,
+          text: ''
+        },
+        city: {
+          is_valid: true,
+          text: ''
+        },
+        state: {
+          is_valid: true,
+          text: ''
+        },
+        zip: {
+          is_valid: true,
+          text: ''
+        }
+      }
+    };
+  },
+  methods: {
+    submitNewCafe: function submitNewCafe() {
+      if (this.validationNewCafe()) {
+        this.$store.dispatch('addCafe', {
+          name: this.name,
+          address: this.address,
+          city: this.city,
+          state: this.state,
+          zip: this.zip
+        });
+      }
+    },
+    validationNewCafe: function validationNewCafe() {
+      var validNewCafeForm = true; // 确保 name 字段不为空
+
+      if (this.name.trim() === '') {
+        validNewCafeForm = false;
+        this.validations.name.is_valid = false;
+        this.validations.name.text = "请输入咖啡店的名字";
+      } else {
+        this.validations.name.is_valid = true;
+        this.validations.name.text = '';
+      } // 确保 address 字段不为空
+
+
+      if (this.address.trim() === '') {
+        validNewCafeForm = false;
+        this.validations.address.is_valid = false;
+        this.validations.address.text = '请输入咖啡店的地址!';
+      } else {
+        this.validations.address.is_valid = true;
+        this.validations.address.text = '';
+      } //  确保 city 字段不为空
+
+
+      if (this.city.trim() === '') {
+        validNewCafeForm = false;
+        this.validations.city.is_valid = false;
+        this.validations.city.text = '请输入咖啡店所在城市!';
+      } else {
+        this.validations.city.is_valid = true;
+        this.validations.city.text = '';
+      } //  确保 state 字段不为空
+
+
+      if (this.state.trim() === '') {
+        validNewCafeForm = false;
+        this.validations.state.is_valid = false;
+        this.validations.state.text = '请输入咖啡店所在省份!';
+      } else {
+        this.validations.state.is_valid = true;
+        this.validations.state.text = '';
+      } // 确保 zip 字段不为空且格式正确
+
+
+      if (this.zip.trim() === '' || !this.zip.match(/(^\d{6}$)/)) {
+        validNewCafeForm = false;
+        this.validations.zip.is_valid = false;
+        this.validations.zip.text = '请输入有效的邮编地址!';
+      } else {
+        this.validations.zip.is_valid = true;
+        this.validations.zip.text = '';
+      }
+
+      return validNewCafeForm;
+    }
+  }
 });
 
 /***/ }),
@@ -44946,21 +45085,6 @@ var render = function() {
           ],
           1
         )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "right" }, [
-        _c("img", {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.userLoadStatus === 2,
-              expression: "userLoadStatus===2"
-            }
-          ],
-          staticClass: "avatar",
-          attrs: { src: _vm.user.avatar }
-        })
       ])
     ],
     1
@@ -45142,7 +45266,231 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div")
+  return _c("div", { staticClass: "page" }, [
+    _c("form", [
+      _c("div", { staticClass: "grid-container" }, [
+        _c("div", { staticClass: "grid-x grid-padding-x" }, [
+          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+            _c("label", [
+              _vm._v("Name\n                        "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.name,
+                    expression: "name"
+                  }
+                ],
+                attrs: { type: "text", placeholder: "咖啡店名" },
+                domProps: { value: _vm.name },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.name = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: !_vm.validations.name.is_valid,
+                    expression: "!validations.name.is_valid"
+                  }
+                ],
+                staticClass: "validation"
+              },
+              [_vm._v(_vm._s(_vm.validations.name.text))]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+            _c("label", [
+              _vm._v("Address\n                        "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.address,
+                    expression: "address"
+                  }
+                ],
+                attrs: { type: "text", placeholder: "地址" },
+                domProps: { value: _vm.address },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.address = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: !_vm.validations.address.is_valid,
+                    expression: "!validations.address.is_valid"
+                  }
+                ],
+                staticClass: "validation"
+              },
+              [_vm._v(_vm._s(_vm.validations.address.text))]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+            _c("label", [
+              _vm._v("City\n                        "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.city,
+                    expression: "city"
+                  }
+                ],
+                attrs: { type: "text", placeholder: "城市" },
+                domProps: { value: _vm.city },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.city = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: !_vm.validations.city.is_valid,
+                    expression: "!validations.city.is_valid"
+                  }
+                ],
+                staticClass: "validation"
+              },
+              [_vm._v(_vm._s(_vm.validations.city.text))]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+            _c("label", [
+              _vm._v("State\n                        "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.state,
+                    expression: "state"
+                  }
+                ],
+                attrs: { type: "text", placeholder: "省份" },
+                domProps: { value: _vm.state },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.state = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: !_vm.validations.state.is_valid,
+                    expression: "!validations.state.is_valid"
+                  }
+                ],
+                staticClass: "validation"
+              },
+              [_vm._v(_vm._s(_vm.validations.state.text))]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+            _c("label", [
+              _vm._v("Zip\n                        "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.zip,
+                    expression: "zip"
+                  }
+                ],
+                attrs: { type: "text", placeholder: "邮编" },
+                domProps: { value: _vm.zip },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.zip = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: !_vm.validations.zip.is_valid,
+                    expression: "!validations.zip.is_valid"
+                  }
+                ],
+                staticClass: "validation"
+              },
+              [_vm._v(_vm._s(_vm.validations.zip.text))]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+            _c(
+              "a",
+              { staticClass: "button", on: { click: _vm.submitNewCafe } },
+              [_vm._v("提交")]
+            )
+          ])
+        ])
+      ])
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -61604,7 +61952,8 @@ var cafes = {
     cafes: [],
     cafesLoadStatus: 0,
     cafe: {},
-    cafeLoadStatus: 0
+    cafeLoadStatus: 0,
+    cafeAddStatus: 0
   },
 
   /**
@@ -61632,6 +61981,21 @@ var cafes = {
         commit('setCafe', {});
         commit('setCafeLoadStatus', 3);
       });
+    },
+    addCafe: function addCafe(_ref3, data) {
+      var commit = _ref3.commit,
+          state = _ref3.state,
+          dispatch = _ref3.dispatch; // 状态1表示开始添加
+
+      commit('setCafeAddStatus', 1);
+      _api_cafe__WEBPACK_IMPORTED_MODULE_0__["default"].postAddNewCafe(data.name, data.address, data.city, data.state, data.zip).then(function (response) {
+        // 状态2表示添加成功
+        commit('setCafeAddStatus', 2);
+        dispatch('loadCafes');
+      })["catch"](function (e) {
+        // 状态3表示添加失败
+        commit('setCafeAddStatus', 3);
+      });
     }
   },
 
@@ -61650,6 +62014,9 @@ var cafes = {
     },
     setCafe: function setCafe(state, cafe) {
       state.cafe = cafe;
+    },
+    setCafeAddStatus: function setCafeAddStatus(state, status) {
+      state.cafeAddStatus = status;
     }
   },
 
@@ -61668,6 +62035,9 @@ var cafes = {
     },
     getCafe: function getCafe(state) {
       return state.cafe;
+    },
+    getCafeAddStatus: function getCafeAddStatus(state) {
+      return state.cafeAddStatus;
     }
   }
 };

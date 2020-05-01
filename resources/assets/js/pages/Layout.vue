@@ -16,7 +16,7 @@
             },
         created() {
             this.$store.dispatch('loadCafes');
-            this.$store.dispatch('loadUser');
+            // this.$store.dispatch('loadUser');
         },
     }
 </script>

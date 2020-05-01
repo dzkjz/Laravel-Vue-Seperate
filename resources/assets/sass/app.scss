@@ -9,5 +9,8 @@
  *
  *  1. Abstracts
  */
-@import "abstracts/variables";
+@import "abstracts/_variables.scss";
 @import "../../../node_modules/foundation-sites/assets/foundation";
+@import "layouts/_page.scss";
+@import "components/_validations.scss";
+
