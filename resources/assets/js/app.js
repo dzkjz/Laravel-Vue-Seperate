@@ -41,8 +41,8 @@ if (token) {
 }
 
 import Vue from 'vue';
-import router from "../assets/js/routes";
-import store from "../assets/js/store";
+import router from "./routes";
+import store from "./store";
 //将 Vue 挂载到 ID 为 app 的页面元素上
 new Vue({
     router,
