@@ -15,6 +15,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
+import Layout from "./pages/Layout";
 import Home from "./pages/Home";
 import Cafes from "./pages/Cafes";
 import Cafe from "./pages/Cafe";
@@ -28,27 +29,34 @@ Vue.use(VueRouter);
 const routes = [
     {
         path: '/',
-        name: 'home',
-        component: Home,
-    },
-    {
-        path: '/cafes',
-        name: 'cafes',
-        component: Cafes,
-    },
-    {
-        path: '/cafes/new',
-        name: 'newcafe',
-        component: NewCafe,
-    },
-    {
-        path: '/cafes/:id', //动态路由,可以通过传入指定 ID 参数来加载对应的咖啡店详情
-        name: 'cafe',
-        component: Cafe,
+        name: 'layout',
+        component: Layout,
+        children: [
+            {
+                path: 'home',
+                name: 'home',
+                component: Home,
+            },
+            {
+                path: '/cafes',
+                name: 'cafes',
+                component: Cafes,
+            },
+            {
+                path: '/cafes/new',
+                name: 'newcafe',
+                component: NewCafe,
+            },
+            {
+                path: '/cafes/:id', //动态路由,可以通过传入指定 ID 参数来加载对应的咖啡店详情
+                name: 'cafe',
+                component: Cafe,
+            }
+        ]
     }
 ];
 const router = new VueRouter({
-    mode: 'history',
+    // mode: 'history',
     routes,
 });
 export default router;
