@@ -19,5 +19,6 @@
     <router-view></router-view>
 </div>
 <script type="text/javascript" src="{{ mix('js/app.js') }}"></script>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=b1cac56d3a90eebab55af0f46b94437f"></script>
 </body>
 </html>

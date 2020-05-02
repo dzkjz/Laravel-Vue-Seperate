@@ -3,8 +3,9 @@
 </template>
 
 <script>
+
     export default {
-        name: "Cafe.vue"
+        name: "Cafe.vue",
     }
 </script>
 

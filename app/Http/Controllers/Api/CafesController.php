@@ -44,7 +44,6 @@ class CafesController extends Controller
         $cafe = Cafe::create($data);
 
         return response()->json($cafe, 201);
-
     }
 
     /*

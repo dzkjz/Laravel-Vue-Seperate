@@ -11,8 +11,9 @@
 
 var api_url = '';
 
-switch (process.env.NODE_ENV)
-//设置 laravel的不同环境（生产、线上这些）是在.env文件中
+var gaode_maps_js_api_key = 'b1cac56d3a90eebab55af0f46b94437f';
+
+switch (process.env.NODE_ENV) //设置 laravel的不同环境（生产、线上这些）是在.env文件中
 //但 process.env.NODE_ENV这个不需要你配置 根据编译资源时运行的是 npm run dev 还是 npm run prod 来区分
 {
     case 'development':
@@ -25,4 +26,5 @@ switch (process.env.NODE_ENV)
 
 export const ROAST_CONFIG = {
     API_URL: api_url,
+    GAODE_MAPS_JS_API_KEY: gaode_maps_js_api_key,
 }
