@@ -37,3 +37,7 @@ Route::get('/auth/{social}/callback', 'Web\AuthenticationController@getSocialCal
 //Route::get('/home', function () {
 //    return view('app');
 //});
+
+//Route::get('geocode', function () {
+//    return \App\Utilities\GaodeMaps::geocodeAddress('锦江区二环路东5段220号北90米', '成都市', '四川省');
+//});

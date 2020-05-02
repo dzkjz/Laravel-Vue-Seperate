@@ -34,5 +34,8 @@ return [
         'client_secret' => env('GITHUB_CLIENT_SECRET'),// Your Github Client Secret
         'redirect' => env('GIT_REDIRECT_URL'),
     ],
+    'gaode' => [
+        'ws_api_key' => env('GAODE_MAPS_WS_API_KEY'),
+    ],//这样，我们就可以在编写代码时通过 config('services.gaode.ws_api_key') 获取 API Key 了。
 
 ];

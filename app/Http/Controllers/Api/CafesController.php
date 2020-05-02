@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCafeRequest;
 use App\Models\Cafe;
+use App\Utilities\GaodeMaps;
 use Illuminate\Http\Request;
 
 class CafesController extends Controller
@@ -37,10 +38,10 @@ class CafesController extends Controller
     public function postNewCafe(StoreCafeRequest $request)
     {
         $data = $request->all();
-        $data['latitude'] = 0;
-        $data['longitude'] = 0;
+        $coordinates = GaodeMaps::geocodeAddress($request->address, $request->city, $request->state);
+        $data['latitude'] = $coordinates['lat'];
+        $data['longitude'] = $coordinates['lng'];
         $cafe = Cafe::create($data);
-
 
         return response()->json($cafe, 201);
 
