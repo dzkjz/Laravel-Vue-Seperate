@@ -10,7 +10,7 @@
  * */
 
 var api_url = '';
-
+var app_url = '';
 var gaode_maps_js_api_key = 'b1cac56d3a90eebab55af0f46b94437f';
 
 switch (process.env.NODE_ENV) //设置 laravel的不同环境（生产、线上这些）是在.env文件中
@@ -26,5 +26,6 @@ switch (process.env.NODE_ENV) //设置 laravel的不同环境（生产、线上�
 
 export const ROAST_CONFIG = {
     API_URL: api_url,
+    APP_URL: app_url,
     GAODE_MAPS_JS_API_KEY: gaode_maps_js_api_key,
 }
