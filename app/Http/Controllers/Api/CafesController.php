@@ -21,7 +21,7 @@ class CafesController extends Controller
     public function getCafes()
     {
 
-        $cafes = Cafe::all();
+        $cafes = Cafe::all()->load('brewMethods');
 
         return response()->json($cafes, 200);
 
@@ -58,8 +58,10 @@ class CafesController extends Controller
     */
     public function getCafe(Cafe $cafe)
     {
-
+        $cafe = $cafe->load('brewMethods');
         return response()->json($cafe, 200);
 
     }
+
+
 }

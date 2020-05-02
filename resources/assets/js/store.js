@@ -27,12 +27,15 @@ Vue.use(Vuex);
  */
 import {cafes} from "./modules/cafes";
 
+import {brewMethods} from "./modules/brewMethods";
+
 /**
  * Export the data store.
  */
 const store = new Vuex.Store({
     modules: {
         cafes,
+        brewMethods,
     },
 });
 
