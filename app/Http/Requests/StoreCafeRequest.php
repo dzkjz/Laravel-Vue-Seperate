@@ -25,17 +25,31 @@ class StoreCafeRequest extends FormRequest
      * 并返回验证失败信息，我们可以在客户端通过捕获响应状态码及失败消息进行处理即可
      * @return array
      */
+//    public function rules()
+//    {
+//        return [
+//            //
+//            'name' => 'required|min:2|max:10',
+//            'address' => 'required',
+//            'city' => 'required',
+//            'state' => 'required',
+//            'zip' => 'required|regex:/\b\d{6}\b/'
+//        ];
+//    }
+
     public function rules()
     {
         return [
-            //
-            'name' => 'required|min:2|max:10',
-            'address' => 'required',
-            'city' => 'required',
-            'state' => 'required',
-            'zip' => 'required|regex:/\b\d{6}\b/'
+            'name' => 'required|min:2',
+            'location.*.address' => 'required',
+            'location.*.city' => 'required',
+            'location.*.state' => 'required',
+            'location.*.zip' => 'required|regex:/\b\d{6}\b/',
+            'location.*.brew_methods' => 'sometimes|array',
+            'website' => 'sometimes|url',
         ];
     }
+
 
     /**
      * 对于验证失败字段，会有默认的失败消息，
@@ -43,19 +57,34 @@ class StoreCafeRequest extends FormRequest
      * 对验证字段失败消息进行自定义
      * @return array|string[]
      */
+//    public function messages()
+//    {
+//        return [
+//            'name.required' => '咖啡店名字不能为空',
+//            'name.min' => '咖啡店名不能短于2个字符',
+//            'name.max' => '咖啡店名不能超过10个字符',
+//            'address.required' => '咖啡店地址不能为空',
+//            'city.required' => '咖啡店所在城市不能为空',
+//            'state.required' => '咖啡店所在省份不能为空',
+//            'zip.required' => '咖啡店邮编不能为空',
+//            'zip.regex' => '无效的邮政编码'
+//        ];
+//    }
+
+
     public function messages()
     {
         return [
             'name.required' => '咖啡店名字不能为空',
-            'name.min' => '咖啡店名不能短于2个字符',
-            'name.max' => '咖啡店名不能超过10个字符',
-            'address.required' => '咖啡店地址不能为空',
-            'city.required' => '咖啡店所在城市不能为空',
-            'state.required' => '咖啡店所在省份不能为空',
-            'zip.required' => '咖啡店邮编不能为空',
-            'zip.regex' => '无效的邮政编码'
+            'name.min' => '咖啡店名不能小于2个字符',
+            'location.*.address.required' => '咖啡店地址不能为空',
+            'location.*.city.required' => '咖啡店所在城市不能为空',
+            'location.*.state.required' => '咖啡店所在省份不能为空',
+            'location.*.zip.required' => '咖啡店邮编不能为空',
+            'location.*.zip.regex' => '咖啡店邮编地址无效',
+            'location.*.brew_methods.array' => '咖啡店冲泡方法无效',
+            'website.url' => '咖啡店网址无效',
         ];
     }
-
 
 }
