@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCafeRequest;
 use App\Models\Cafe;
+use App\Models\Tag;
 use App\Utilities\GaodeMaps;
+use App\Utilities\Tagger;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CafesController extends Controller
 {
@@ -87,6 +90,11 @@ class CafesController extends Controller
         $brewMethods = $locations[0]['methodsAvailable'];
         // 保存与此咖啡店关联的所有冲泡方法（保存关联关系）
         $parentNodeCafe->brewMethods()->sync($brewMethods);
+        // 标签数据
+        $tags = $locations[0]['tags'];
+        // 绑定咖啡店与标签
+        Tagger::tagCafe($parentNodeCafe, $tags, auth()->id());
+
         // 将当前咖啡店数据推送到已添加咖啡店数组
         array_push($addedCafes, $parentNodeCafe->toArray());
 
@@ -120,6 +128,10 @@ class CafesController extends Controller
                 $brewMethods = $locations[$i]['methodsAvailable'];
                 // 保存与此咖啡店关联的所有冲泡方法（保存关联关系）
                 $childNodeCafe->brewMethods()->sync($brewMethods);
+                // 标签数据
+                $tags = $locations[$i]['tags'];
+                // 绑定咖啡店与标签
+                Tagger::tagCafe($childNodeCafe, $tags, auth()->id());
                 // 将当前咖啡店数据推送到已添加咖啡店数组
                 array_push($addedCafes, $childNodeCafe->toArray());
             }
@@ -167,4 +179,40 @@ class CafesController extends Controller
 
     }
 
+    /**
+     * 给咖啡店添加标签
+     * @param $request
+     * @param $cafeID
+     * @return JsonResponse
+     */
+    public function postAddTags(Request $request, $cafeId)
+    {
+        $tags = $request->input('tags');
+        $cafe = Cafe::find($cafeId);
+        // 处理新增标签并建立标签与咖啡店之间的关联
+        Tagger::tagCafe($cafe, $tags, auth()->id());
+
+        $cafe = $cafe->load('brewMethod')
+            ->load('authUserLike')
+            ->load('tags');
+
+        return response()->json($cafe, 201);
+    }
+
+    /**
+     * 删除咖啡店上的指定标签
+     * @param $cafeID
+     * @param $tagID
+     * @return Response
+     */
+    public function deleteCafeTag($cafeId, $tagId)
+    {
+        DB::table('cafes_users_tags')
+            ->where('cafe_id', $cafeId)
+            ->where('tag_id', $tagId)
+            ->where('user_id', auth()->id())
+            ->delete();
+
+        return response()->json(null, 204);
+    }
 }
