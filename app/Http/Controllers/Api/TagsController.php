@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 
 class TagsController extends Controller
 {
-    public function getTags()
+    public function getTags(Request $request)
     {
-        $query = Request::get('search');
+        $query = $request->get('search');
 
         if ($query == null || $query == '') {
             $tags = Tag::all();

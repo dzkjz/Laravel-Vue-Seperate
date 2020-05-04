@@ -155,7 +155,7 @@ class CafesController extends Controller
     {
         $cafe = $cafe->load('brewMethods')
             ->load('authUserLike')//使返回给咖啡店详情页的数据中包含用户是否喜欢咖啡店
-        ;
+            ->load('tags');
         return response()->json($cafe, 200);
     }
 

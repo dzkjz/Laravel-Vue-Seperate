@@ -13,6 +13,14 @@
                             </div>
                         </div>
 
+                        <div class="tags-container">
+                            <div class="grid-x grid-padding-x">
+                                <div class="large-12 medium-12 small-12 cell">
+                                    <span class="tag" v-for="tag in cafe.tags">#{{tag.name}}</span>
+                                </div>
+                            </div>
+                        </div>
+
                         <span class="address">
                             {{cafe.address}}<br>
                             {{cafe.city}},{{cafe.state}}<br>
@@ -111,6 +119,21 @@
 
             div.cell {
                 text-align: center;
+            }
+        }
+
+        div.tags-container {
+            max-width: 700px;
+            margin: auto;
+            text-align: center;
+            margin-top: 30px;
+
+            span.tag {
+                color: $dark-color;
+                font-family: 'Josefin Sans', sans-serif;
+                margin-right: 20px;
+                display: inline-block;
+                line-height: 20px;
             }
         }
     }

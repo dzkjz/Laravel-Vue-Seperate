@@ -64,6 +64,10 @@
                         <label v-bind:for="'brew-method-'+brewMethod.id+'-'+key">{{ brewMethod.method }}</label>
                     </span>
                     </div>
+
+                    <div class="large-12 medium-12 small-12 cell">
+                        <tags-input :unique="key"></tags-input>
+                    </div>
                     <div class="large-12 medium-12 small-12 cell">
                         <a class="button" v-on:click="removeLocation(key)">移除位置</a>
                     </div>
@@ -82,8 +86,14 @@
 </template>
 
 <script>
+    import TagsInput from "../components/global/forms/TagsInput";
+    import {EventBus} from "../event-bus";
+
     export default {
         name: "NewCafe.vue",
+        components: {
+            TagsInput,
+        },
         data: function () {
             return {
                 // name: '',
@@ -169,7 +179,16 @@
             },
             addLocation() {
                 //将一个位置对象推送到 locations 字段,其中包含名称、地址、城市、省份和邮编以及有效的冲泡方法数组
-                this.locations.push({name: '', address: '', city: '', state: '', zip: '', methodsAvailable: []});
+                this.locations.push(
+                    {
+                        name: '',
+                        address: '',
+                        city: '',
+                        state: '',
+                        zip: '',
+                        methodsAvailable: [],
+                        tags: '',
+                    });
 
                 //然后将位置对象中的某些字段验证规则推送到 validations.locations 字段
                 // 我们在验证规则中去掉了 name 和 methodsAvailable 属性，
@@ -255,7 +274,6 @@
                 //
                 // return validNewCafeForm;
 
-
                 for (var index in this.locations) {
 
                     if (this.locations.hasOwnProperty(index)) {
@@ -327,6 +345,9 @@
                 };
                 //清理完表单数据信息后 调用 this.addLocation() 添加一个新的位置信息到表单
                 this.addLocation();
+
+                //清理tags输入
+                EventBus.$emit('clear-tags');
             },
 
 
@@ -345,6 +366,11 @@
                     $('#cafe-added-unsuccessfully').show().delay(5000).fadeOut();
                 }
             }
+        },
+        mounted() {
+            EventBus.$on('tags-edited', function (tagsAdded) {
+                this.locations[tagsAdded.unique].tags = tagsAdded.tags;
+            }.bind(this));
         },
 
     }
