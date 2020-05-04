@@ -141,10 +141,30 @@ class CafesController extends Controller
     */
     public function getCafe(Cafe $cafe)
     {
-        $cafe = $cafe->load('brewMethods');
+        $cafe = $cafe->load('brewMethods')
+            ->load('authUserLike')//使返回给咖啡店详情页的数据中包含用户是否喜欢咖啡店
+        ;
         return response()->json($cafe, 200);
-
     }
 
+
+    public function postLikeCafe($cafeId)
+    {
+        $cafe = Cafe::find($cafeId);
+
+        $cafe->likesBy()->attach(auth()->id());
+
+        return response()->json(['cafe_liked' => true], 201);
+    }
+
+    public function deleteLikeCafe($cafeId)
+    {
+        $cafe = Cafe::find($cafeId);
+
+        $cafe->likesBy()->detach(auth()->id());
+
+        return response()->json(['cafe_liked_cancelled' => true], 204);
+
+    }
 
 }

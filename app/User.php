@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Cafe;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -37,4 +38,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // 与 Cafe 间的多对多关联
+    public function likesCafe()
+    {
+        return $this->belongsToMany(
+            Cafe::class,
+            'users_cafes_likes',
+            'user_id',
+            'cafe_id')
+            ->withTimestamps();
+    }
 }

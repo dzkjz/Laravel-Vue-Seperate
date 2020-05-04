@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Cafe extends Model
@@ -38,4 +39,29 @@ class Cafe extends Model
     {
         return $this->hasOne(Cafe::class, 'id', 'parent');
     }
+
+    // 与 User 间的多对对关联
+    public function likesBy()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'users_cafes_likes',
+            'cafe_id',
+            'user_id')
+            ->withTimestamps();
+    }
+
+    /**
+     * 该关联方法用于标识登录用户是否已经喜欢/取消喜欢指定咖啡店，以便我们可以正确初始化状态。
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function authUserLike()
+    {
+        return $this->belongsToMany(User::class,
+            'users_cafes_likes',
+            'cafe_id',
+            'user_id')
+            ->where('user_id', auth()->id());
+    }
+
 }
