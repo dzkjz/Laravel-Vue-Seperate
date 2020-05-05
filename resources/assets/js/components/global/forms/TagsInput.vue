@@ -17,8 +17,8 @@
             <div class="tag-autocomplete" v-show="showAutocomplete">
                 <div class="tag-search-result" v-for="(tag,key) in tagSearchResults"
                      :class="{'selected-search-index':searchSelectedIndex===key}"
-                     @click="selectTag(tag.tag)">
-                    {{tag.tag}}
+                     @click="selectTag(tag.name)">
+                    {{tag.name}}
                 </div>
             </div>
         </div>
@@ -28,6 +28,7 @@
 <script>
     import {ROAST_CONFIG} from "../../../config";
     import {EventBus} from "../../../event-bus";
+    import _ from 'lodash';
 
     export default {
         name: "TagsInput",
@@ -56,6 +57,7 @@
             showAutocomplete() {
                 return this.tagSearchResults.length !== 0;
             },
+
         },
         methods: {
             // 从下拉列表选择自动提示标签
@@ -101,18 +103,19 @@
 
                 if (direction === 'up' && (this.searchSelectedIndex - 1 > -1)) {
                     this.searchSelectedIndex = this.searchSelectedIndex - 1;
-                    this.currentTag = this.tagSearchResults[this.searchSelectedIndex].tag;
+                    this.currentTag = this.tagSearchResults[this.searchSelectedIndex].name;
 
                 }
 
                 if (direction === 'down' && (this.searchSelectedIndex + 1 <= this.tagSearchResults.length - 1)) {
                     this.searchSelectedIndex = this.searchSelectedIndex + 1;
-                    this.currentTag = this.tagSearchResults[this.searchSelectedIndex].tag;
+                    this.currentTag = this.tagSearchResults[this.searchSelectedIndex].name;
                 }
 
             },
             //根据搜索词查询后端自动提示API接口 并将结果展示到下拉列表
-            searchTags() {
+            // 引入防抖动函数，在 300ms 后执行匿名函数内代码
+            searchTags: _.debounce(function (e) {
                 if (this.currentTag.length > 2 && !this.pauseSearch)//输入字符两个以上且未要求暂停
                 {
                     this.searchSelectedIndex = -1;
@@ -124,7 +127,7 @@
                         this.tagSearchResults = response.data;
                     }.bind(this));
                 }
-            },
+            }, 300),
 
             //检查标签是否重复
             checkDuplicates(tagName) {
@@ -172,7 +175,8 @@
         position: relative;
 
         div.tags-input {
-            display: block;
+            /*display: block;*/
+            display: table;
             -webkit-box-sizing: border-box;
             box-sizing: border-box;
             width: 100%;

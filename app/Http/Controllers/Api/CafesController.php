@@ -24,7 +24,7 @@ class CafesController extends Controller
     public function getCafes()
     {
 
-        $cafes = Cafe::all()->load('brewMethods');
+        $cafes = Cafe::all()->load('brewMethods')->load('tags:name');
 
         return response()->json($cafes, 200);
 
