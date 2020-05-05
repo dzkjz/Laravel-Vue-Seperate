@@ -15,7 +15,8 @@ class AuthenticationController extends Controller
         try {
             return Socialite::driver($account)->redirect();
         } catch (\InvalidArgumentException $exception) {
-            return redirect('/login');
+//            return redirect('/login');
+            return redirect('/');
         }
     }
 
@@ -46,6 +47,6 @@ class AuthenticationController extends Controller
         Auth::login($user);
 
         //登录成过后将用户重定向到首页
-        return redirect('/#/home');
+        return redirect('/home');
     }
 }
