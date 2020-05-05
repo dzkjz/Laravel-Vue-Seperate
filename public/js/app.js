@@ -64620,7 +64620,15 @@ if (token) {
 new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   router: _routes__WEBPACK_IMPORTED_MODULE_1__["default"],
   store: _store__WEBPACK_IMPORTED_MODULE_2__["default"]
-}).$mount('#app');
+}).$mount('#app'); //我们在每次路由更新后，都会模拟向 Google Analytics 发送页面访问请求并设置访问的页面链接，
+// 这样我们就可以在 Google Analytics 查看访问统计信息了：
+
+ga('set', 'page', _routes__WEBPACK_IMPORTED_MODULE_1__["default"].currentRoute.path);
+ga('send', 'pageview');
+_routes__WEBPACK_IMPORTED_MODULE_1__["default"].afterEach(function (to, from) {
+  ga('set', 'page', to.path);
+  ga('send', 'pageview');
+});
 
 /***/ }),
 
