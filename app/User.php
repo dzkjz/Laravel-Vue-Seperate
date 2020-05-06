@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Models\Cafe;
+use App\Models\CafePhoto;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -50,5 +51,10 @@ class User extends Authenticatable
             'user_id',
             'cafe_id')
             ->withTimestamps();
+    }
+
+    public function cafePhotos()
+    {
+        return $this->hasMany(CafePhoto::class, 'id', 'uploaded_by');
     }
 }

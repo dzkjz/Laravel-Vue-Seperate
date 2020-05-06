@@ -37,14 +37,30 @@ export default {
     //     });
     // }
 
-    postAddNewCafe: function (name, locations, website, description, roaster) {
-        return axios.post(ROAST_CONFIG.API_URL + '/cafes', {
-            name: name,
-            locations: locations,
-            website: website,
-            description: description,
-            roaster: roaster
-        });
+    postAddNewCafe: function (name, locations, website, description, roaster, picture) {
+        let formData = new FormData();
+
+        formData.append('name', name);
+        formData.append('locations', JSON.stringify(locations));
+        formData.append('website', website);
+        formData.append('description', description);
+        formData.append('roaster', roaster);
+        formData.append('file', picture);
+        return axios.post(ROAST_CONFIG.API_URL + '/cafes', formData,
+            // {
+            //     name: name,
+            //     locations: locations,
+            //     website: website,
+            //     description: description,
+            //     roaster: roaster,
+            //     picture: picture
+            // },
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
+        );
     },
     /**
      * POST  /api/v1/cafes/{cafeID}/like

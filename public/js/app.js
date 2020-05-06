@@ -3198,6 +3198,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3242,6 +3247,7 @@ __webpack_require__.r(__webpack_exports__);
       website: '',
       description: '',
       roaster: false,
+      picture: '',
       validations: {
         name: {
           is_valid: true,
@@ -3285,7 +3291,8 @@ __webpack_require__.r(__webpack_exports__);
           locations: this.locations,
           website: this.website,
           description: this.description,
-          roaster: this.roaster
+          roaster: this.roaster,
+          picture: this.picture
         });
       }
     },
@@ -3434,6 +3441,8 @@ __webpack_require__.r(__webpack_exports__);
       this.website = '';
       this.description = '';
       this.roaster = false;
+      this.picture = '';
+      this.$refs.photo.value = '';
       this.validations = {
         name: {
           is_valid: true,
@@ -3448,11 +3457,14 @@ __webpack_require__.r(__webpack_exports__);
           is_valid: true,
           text: ''
         }
-      }; //清理完表单数据信息后 调用 this.addLocation() 添加一个新的位置信息到表单
+      }; //清理tags输入
 
-      this.addLocation(); //清理tags输入
+      _event_bus__WEBPACK_IMPORTED_MODULE_1__["EventBus"].$emit('clear-tags'); //清理完表单数据信息后 调用 this.addLocation() 添加一个新的位置信息到表单
 
-      _event_bus__WEBPACK_IMPORTED_MODULE_1__["EventBus"].$emit('clear-tags');
+      this.addLocation();
+    },
+    handleFileUpload: function handleFileUpload() {
+      this.picture = this.$refs.photo.files[0];
     }
   },
   watch: {
@@ -48405,6 +48417,21 @@ var render = function() {
                   }
                 })
               ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+              _c("label", [
+                _vm._v("图片\n                        "),
+                _c("input", {
+                  ref: "photo",
+                  attrs: { type: "file", id: "cafe-photo" },
+                  on: {
+                    change: function($event) {
+                      return _vm.handleFileUpload()
+                    }
+                  }
+                })
+              ])
             ])
           ]),
           _vm._v(" "),
@@ -65278,13 +65305,26 @@ __webpack_require__.r(__webpack_exports__);
   //         zip: zip,
   //     });
   // }
-  postAddNewCafe: function postAddNewCafe(name, locations, website, description, roaster) {
-    return axios.post(_config_js__WEBPACK_IMPORTED_MODULE_0__["ROAST_CONFIG"].API_URL + '/cafes', {
-      name: name,
-      locations: locations,
-      website: website,
-      description: description,
-      roaster: roaster
+  postAddNewCafe: function postAddNewCafe(name, locations, website, description, roaster, picture) {
+    var formData = new FormData();
+    formData.append('name', name);
+    formData.append('locations', JSON.stringify(locations));
+    formData.append('website', website);
+    formData.append('description', description);
+    formData.append('roaster', roaster);
+    formData.append('file', picture);
+    return axios.post(_config_js__WEBPACK_IMPORTED_MODULE_0__["ROAST_CONFIG"].API_URL + '/cafes', formData, // {
+    //     name: name,
+    //     locations: locations,
+    //     website: website,
+    //     description: description,
+    //     roaster: roaster,
+    //     picture: picture
+    // },
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
     });
   },
 
@@ -66628,7 +66668,7 @@ var cafes = {
       //     commit('setCafeAddStatus', 3);
       // })
 
-      _api_cafe__WEBPACK_IMPORTED_MODULE_0__["default"].postAddNewCafe(data.name, data.locations, data.website, data.description, data.roaster).then(function (response) {
+      _api_cafe__WEBPACK_IMPORTED_MODULE_0__["default"].postAddNewCafe(data.name, data.locations, data.website, data.description, data.roaster, data.picture).then(function (response) {
         commit('setCafeAddStatus', 2);
         dispatch('loadCafes');
       })["catch"](function (e) {

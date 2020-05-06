@@ -77,7 +77,7 @@ export const cafes = {
             // })
 
 
-            CafeAPI.postAddNewCafe(data.name, data.locations, data.website, data.description, data.roaster)
+            CafeAPI.postAddNewCafe(data.name, data.locations, data.website, data.description, data.roaster,data.picture)
                 .then(function (response) {
                     commit('setCafeAddStatus', 2);
                     dispatch('loadCafes');

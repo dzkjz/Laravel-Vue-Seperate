@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCafeRequest;
 use App\Models\Cafe;
+use App\Models\CafePhoto;
 use App\Models\Tag;
 use App\Utilities\GaodeMaps;
 use App\Utilities\Tagger;
@@ -51,11 +52,12 @@ class CafesController extends Controller
         // 已添加的咖啡店
         $addedCafes = [];
 
-
         //数据取出
         $data = $request->all();
+
         // 咖啡店名称
         $name = $data['name'];
+
         // 咖啡烘焙师
         $roaster = $data['roaster'] ? 1 : 0;
         // 咖啡店网址
@@ -66,7 +68,7 @@ class CafesController extends Controller
         $added_by = $request->user()->id;
 
         $locations = $data['locations'];
-
+        $locations = json_decode($locations);
         //第一个节点设置为父节点
         $parentNodeData = [
             'name' => $name,
@@ -74,11 +76,11 @@ class CafesController extends Controller
             'website' => $website,
             'description' => $description,
             'added_by' => $added_by,
-            'location_name' => $locations[0]['name'],
-            'address' => $address = $locations[0]['address'],
-            'city' => $city = $locations[0]['city'],
-            'state' => $state = $locations[0]['state'],
-            'zip' => $locations[0]['zip'],
+            'location_name' => $locations[0]->name,
+            'address' => $address = $locations[0]->address,
+            'city' => $city = $locations[0]->city,
+            'state' => $state = $locations[0]->state,
+            'zip' => $locations[0]->zip,
         ];
         $coordinates = GaodeMaps::geocodeAddress($address, $city, $state);
         $parentNodeData['latitude'] = $coordinates['lat'];
@@ -86,12 +88,37 @@ class CafesController extends Controller
 
         $parentNodeCafe = Cafe::create($parentNodeData);
 
+        $photos = $request->file('file');
+
+        if ($photos && $photos->isValid()) {
+            $destinationPath = storage_path('app/public/photo' . $parentNodeCafe->id);
+            //如果目录不存在则创建
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath);
+            }
+
+            //文件名
+            $fileName = time() . '-' . $photos->getClientOriginalName();
+
+            //保存文件到目录
+            $photos->move($destinationPath, $fileName);
+
+            //在数据库中创建新纪录 保存刚刚上传的文件的位置信息
+
+            CafePhoto::create([
+                'cafe_id' => $parentNodeCafe->id,
+                'uploaded_by' => auth()->id(),
+                'file_url' => $destinationPath . DIRECTORY_SEPARATOR . $fileName,
+            ]);
+
+        }
+
         // 冲泡方法
-        $brewMethods = $locations[0]['methodsAvailable'];
+        $brewMethods = $locations[0]->methodsAvailable;
         // 保存与此咖啡店关联的所有冲泡方法（保存关联关系）
         $parentNodeCafe->brewMethods()->sync($brewMethods);
         // 标签数据
-        $tags = $locations[0]['tags'];
+        $tags = $locations[0]->tags;
         // 绑定咖啡店与标签
         Tagger::tagCafe($parentNodeCafe, $tags, auth()->id());
 
@@ -112,11 +139,11 @@ class CafesController extends Controller
                     'website' => $website,
                     'description' => $description,
                     'added_by' => $added_by,
-                    'location_name' => $locations[$i]['name'],
-                    'address' => $address = $locations[$i]['address'],
-                    'city' => $city = $locations[$i]['city'],
-                    'state' => $state = $locations[$i]['state'],
-                    'zip' => $locations[$i]['zip'],
+                    'location_name' => $locations[$i]->name,
+                    'address' => $address = $locations[$i]->address,
+                    'city' => $city = $locations[$i]->city,
+                    'state' => $state = $locations[$i]->state,
+                    'zip' => $locations[$i]->zip,
                 ];
                 $coordinates = GaodeMaps::geocodeAddress($address, $city, $state);
                 $childNodeData['latitude'] = $coordinates['lat'];
@@ -125,11 +152,11 @@ class CafesController extends Controller
                 $childNodeCafe = Cafe::create($childNodeData);
 
                 // 冲泡方法
-                $brewMethods = $locations[$i]['methodsAvailable'];
+                $brewMethods = $locations[$i]->methodsAvailable;
                 // 保存与此咖啡店关联的所有冲泡方法（保存关联关系）
                 $childNodeCafe->brewMethods()->sync($brewMethods);
                 // 标签数据
-                $tags = $locations[$i]['tags'];
+                $tags = $locations[$i]->tags;
                 // 绑定咖啡店与标签
                 Tagger::tagCafe($childNodeCafe, $tags, auth()->id());
                 // 将当前咖啡店数据推送到已添加咖啡店数组
