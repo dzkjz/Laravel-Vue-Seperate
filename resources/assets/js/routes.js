@@ -22,6 +22,8 @@ import Cafe from "./pages/Cafe";
 import NewCafe from "./pages/NewCafe";
 import store from './store.js';
 
+import Profile from "./pages/Profile";
+
 /**
  * Extends Vue to use Vue Router
  */
@@ -83,6 +85,12 @@ const routes = [
                 path: '/cafes/:id', //动态路由,可以通过传入指定 ID 参数来加载对应的咖啡店详情
                 name: 'cafe',
                 component: Cafe,
+            },
+            {
+                path: 'profile',
+                name: 'profile',
+                component: Profile,
+                beforeEnter: requireAuth,
             }
         ]
     }

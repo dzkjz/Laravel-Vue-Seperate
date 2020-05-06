@@ -14,6 +14,7 @@ export const users = {
     state: {
         user: {},
         userLoadStatus: 0,
+        userUpdateStatus: 0,
     },
 
     /*
@@ -33,6 +34,19 @@ export const users = {
                 .catch(function () {
                     commit('setUser', {});
                     commit('setUserLoadStatus', 3);
+                });
+        },
+
+        editUser({commit, state, dispatch}, data) {
+            commit('setUpdateUserStatus', 1);
+            UserAPI.putUpdateUser(data.profile_visibility, data.favorite_coffee, data.flavor_notes, data.city, data.state)
+                .then(function (response) {
+                    commit('setUpdateUserStatus', 2);
+                    //重新加载user
+                    dispatch('loadUser');
+                })
+                .catch(function (e) {
+                    commit('setUpdateUserStatus', 3);
                 });
         },
 
@@ -63,6 +77,11 @@ export const users = {
         setUser(state, user) {
             state.user = user;
         },
+
+
+        setUpdateUserStatus(state, status) {
+            state.userUpdateStatus = status;
+        },
     },
 
     /*
@@ -76,15 +95,17 @@ export const users = {
             return function () {
                 return state.userLoadStatus;
             }
-        }
-        ,
+        },
 
         /*
          Returns the user.
          */
         getUser(state) {
             return state.user;
-        }
-        ,
+        },
+
+        getUserUpdateStatus(state) {
+            return state.userUpdateStatus;
+        },
     }
 }

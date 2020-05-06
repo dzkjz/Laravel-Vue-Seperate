@@ -23,9 +23,10 @@ use Illuminate\Support\Facades\Route;
 
 
 //Route::get('/', 'Web\AppController@getApp')->middleware('auth');
-Route::get('/', 'Web\AppController@getApp');
-Route::get('/home', 'Web\AppController@getApp');
-Route::get('/cafes/{cafe}', 'Web\AppController@getApp');
+Route::get('/{any?}', 'Web\AppController@getApp');
+//Route::get('/home', 'Web\AppController@getApp');
+//Route::get('/home', 'Web\AppController@getApp');
+//Route::get('/cafes/{cafe}', 'Web\AppController@getApp');
 //Route::get('/login', 'Web\AppController@getLogin')
 //    ->name('login')
 //    ->middleware('guest');

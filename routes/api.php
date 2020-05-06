@@ -59,7 +59,16 @@ Route::group(
         | 功能描述:    用户从某个咖啡店上删除标签
         */
         Route::delete('/cafes/{id}/tags/{tagId}', 'Api\CafesController@deleteCafeTag');
-
+        /*
+        |-------------------------------------------------------------------------------
+        | 更新用户个人信息
+        |-------------------------------------------------------------------------------
+        | 请求URL:     /api/v1/user
+        | 控制器方法:   API\UsersController@putUpdateUser
+        | 请求方式:     PUT
+        | 功能描述:     更新认证用户的个人信息
+        */
+        Route::put('/user', 'Api\UsersController@putUpdateUser');
 
     }
 );
