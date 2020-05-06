@@ -3,7 +3,11 @@
         <div class="grid-container">
             <div class="grid-x grid-padding-x">
                 <div class="large-12 medium-12 small-12 columns">
-                    <router-link :to="{name:'newcafe'}" class="add-cafe-button">+新增咖啡店</router-link>
+                    <router-link :to="{name:'newcafe'}" v-if="user !== '' && userLoadStatus === 2"
+                                 class="add-cafe-button">+新增咖啡店
+                    </router-link>
+                    <a class="add-cafe-text" v-if="user === '' && userLoadStatus === 2"
+                       v-on:click="login()">登录后添加咖啡店</a>
                 </div>
             </div>
         </div>
@@ -21,6 +25,7 @@
     import CafeFilter from "../components/cafes/CafeFilter";
     import Loader from "../components/global/Loader";
     import CafeCard from "../components/cafes/CafeCard";
+    import {EventBus} from '../event-bus.js';
 
     export default {
         name: "Home.vue",
@@ -44,7 +49,24 @@
             cafes() {
                 return this.$store.getters.getCafes;
             },
-        }
+            // 从 Vuex 中获取用户加载状态
+            userLoadStatus() {
+                // return this.$store.getters.getUserLoadStatus;
+                //以前是属性方法名，现在由于属性方法返回值还是函数，所以需要加上()对其进行调用才能获取到状态值。
+                return this.$store.getters.getUserLoadStatus();
+
+            },
+
+            // 从 Vuex 中获取用户信息
+            user() {
+                return this.$store.getters.getUser;
+            },
+        },
+        methods: {
+            login() {
+                EventBus.$emit('prompt-login');
+            },
+        },
     }
 </script>
 

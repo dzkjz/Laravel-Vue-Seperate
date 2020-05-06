@@ -29,6 +29,8 @@ import {cafes} from "./modules/cafes";
 
 import {brewMethods} from "./modules/brewMethods";
 
+import {users} from "./modules/users";
+
 /**
  * Export the data store.
  */
@@ -36,6 +38,7 @@ const store = new Vuex.Store({
     modules: {
         cafes,
         brewMethods,
+        users,
     },
 });
 

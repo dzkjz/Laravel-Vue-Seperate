@@ -20,15 +20,46 @@ import Home from "./pages/Home";
 import Cafes from "./pages/Cafes";
 import Cafe from "./pages/Cafe";
 import NewCafe from "./pages/NewCafe";
+import store from './store.js';
 
 /**
  * Extends Vue to use Vue Router
  */
 Vue.use(VueRouter);
 
+function requireAuth(to, from, next) {
+    function proceed() {
+        // 如果用户信息已经加载并且不为空则说明该用户已登录，可以继续访问路由，否则跳转到首页
+        // 这个功能类似 Laravel 中的 auth 中间件
+        if (store.getters.getUserLoadStatus() === 2) {
+            if (store.getters.getUser !== '') {
+                next();
+            } else {
+                next('/home');
+            }
+        }
+    }
+
+    if (store.getters.getUserLoadStatus() !== 2) {
+        // 如果用户信息未加载完毕则先加载
+        store.dispatch('loadUser');
+
+        // 监听用户信息加载状态，加载完成后调用 proceed 方法继续后续操作
+        store.watch(store.getters.getUserLoadStatus, function () {
+            if (store.getters.getUserLoadStatus() === 2) {
+                proceed();
+            }
+        });
+    } else {
+        // 如果用户信息加载完毕直接调用 proceed 方法
+        proceed()
+    }
+}
+
 const routes = [
     {
         path: '/',
+        redirect: {name: 'home'},
         name: 'layout',
         component: Layout,
         children: [
@@ -46,6 +77,7 @@ const routes = [
                 path: '/cafes/new',
                 name: 'newcafe',
                 component: NewCafe,
+                beforeEnter: requireAuth,
             },
             {
                 path: '/cafes/:id', //动态路由,可以通过传入指定 ID 参数来加载对应的咖啡店详情

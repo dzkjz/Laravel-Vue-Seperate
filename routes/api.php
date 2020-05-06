@@ -19,10 +19,6 @@ Route::group(
         'middleware' => 'auth:api',
     ],
     function () {
-//        Route::get('/user', function (Request $request) {
-//            return $request->user();
-//        });
-        Route::get('/user', 'Api\UsersController@getUser');
 
         /*
          |-------------------------------------------------------------------------------
@@ -70,6 +66,7 @@ Route::group(
 
 // 公有路由，无需登录即可访问 [需要登录才能访问的路由称之为私有路由]
 Route::group(['prefix' => 'v1'], function () {
+    Route::get('/user', 'Api\UsersController@getUser');
     /*
              |-------------------------------------------------------------------------------
              | Get All Cafes

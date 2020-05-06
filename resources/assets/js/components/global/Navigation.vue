@@ -11,30 +11,45 @@
             </li>
         </ul>
 
-<!--        <div class="right">-->
-<!--            <img :src="user.avatar" v-show="userLoadStatus===2" class="avatar"/>-->
-<!--        </div>-->
+        <div class="right">
+            <img :src="user.avatar" v-if="user !== '' && userLoadStatus === 2" v-show="userLoadStatus === 2"
+                 class="avatar">
+            <span class="logout" v-if="user !== '' && userLoadStatus === 2" v-on:click="logout()">退出</span>
+            <span class="login" v-if="user === ''" v-on:click="login()">登陆</span>
+        </div>
     </nav>
 </template>
 
 <script>
+    import {EventBus} from "../../event-bus";
+
+
     export default {
         name: "Navigation",
         // 定义组件的计算属性
         computed: {
             // 从 Vuex 中获取用户加载状态
             userLoadStatus() {
-                return this.$store.getters.getUserLoadStatus;
+                return this.$store.getters.getUserLoadStatus();
             },
             // 从 Vuex 中获取用户信息
             user() {
                 return this.$store.getters.getUser;
             }
-        }
+        },
+        methods: {
+            login() {
+                EventBus.$emit('prompt-login');
+            },
+            logout() {
+                this.$store.dispatch('logoutUser');
+                window.location = '/logout';
+            },
+        },
     }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
     @import '~@/abstracts/_variables.scss';
 
     nav.top-navigation {

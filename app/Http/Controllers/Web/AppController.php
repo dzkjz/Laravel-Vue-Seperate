@@ -19,6 +19,7 @@ class AppController extends Controller
 
     public function getLogout()
     {
+        auth()->logout();
         return redirect('/');
     }
 

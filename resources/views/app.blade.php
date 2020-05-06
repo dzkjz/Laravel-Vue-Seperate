@@ -1,18 +1,31 @@
 <!doctype html>
 <html lang="en">
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-H81K3J5ZGK"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
+{{--<!-- Global site tag (gtag.js) - Google Analytics -->--}}
+{{--<script async src="https://www.googletagmanager.com/gtag/js?id=G-H81K3J5ZGK"></script>--}}
+{{--<script>--}}
+{{--    window.dataLayer = window.dataLayer || [];--}}
 
-    function gtag() {
-        dataLayer.push(arguments);
-    }
+{{--    function gtag() {--}}
+{{--        dataLayer.push(arguments);--}}
+{{--    }--}}
 
-    gtag('js', new Date());
+{{--    gtag('js', new Date());--}}
 
-    gtag('config', 'G-H81K3J5ZGK');
-</script>
+{{--    gtag('config', 'UA-GA_TRACKING-CODE', {'optimize_id': 'G-H81K3J5ZGK'})--}}
+{{--    gtag('config', 'G-H81K3J5ZGK');--}}
+{{--</script>--}}
+{{--<script>--}}
+
+{{--    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){--}}
+{{--        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),--}}
+{{--        m=s.getElementsByTagName(o)--}}
+{{--            [0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)--}}
+{{--    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');--}}
+
+{{--    ga('create', 'G-H81K3J5ZGK', 'auto') ;--}}
+{{--    ga('send', 'pageview');--}}
+
+{{--</script>--}}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"

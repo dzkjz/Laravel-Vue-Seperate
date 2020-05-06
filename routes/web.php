@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 
 //Route::get('/', 'Web\AppController@getApp')->middleware('auth');
 Route::get('/', 'Web\AppController@getApp');
+Route::get('/home', 'Web\AppController@getApp');
 Route::get('/cafes/{cafe}', 'Web\AppController@getApp');
 //Route::get('/login', 'Web\AppController@getLogin')
 //    ->name('login')
@@ -42,3 +43,4 @@ Route::get('/auth/{social}/callback', 'Web\AuthenticationController@getSocialCal
 //Route::get('geocode', function () {
 //    return \App\Utilities\GaodeMaps::geocodeAddress('锦江区二环路东5段220号北90米', '成都市', '四川省');
 //});
+Route::get('logout', 'Web\AppController@getLogout')->middleware('auth');
